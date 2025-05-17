@@ -1,3 +1,45 @@
+ ----------------------
+🧱 Tech Stack
+ ----------------------
+Layer	Tool / Library
+UI	Streamlit
+LLM	LLaMA 2 or 3 (via Hugging Face Transformers)
+Embeddings	SentenceTransformers or InstructorEmbedding
+Vector Store	FAISS or Chroma
+RAG Framework	LangChain or plain Python + Transformers
+Doc Generation	python-docx, docx2pdf
+PDF Parsing	PyMuPDF, pdfplumber
+
+ ----------------------
+ Architecture (LLaMA + RAG)
+ ----------------------
+                +---------------------+
+                |    Streamlit UI     | ← user logs, issues, queries
+                +---------+-----------+
+                          |
+                          ▼
+                +---------+-----------+
+                |      Backend        | ← Python (RAG + PDF parsing)
+                +---------+-----------+
+                          |
+         +----------------+--------------------+
+         |                                     |
+         ▼                                     ▼
+ +-----------------+                +--------------------------+
+ | Vector DB Index | ← FAISS/Chroma|  Local LLaMA Model (HF)   |
+ | (100s of Manuals)|               | via HuggingFace Transformers |
+ +-----------------+                +--------------------------+
+         |                                     ▲
+         +------------- Retrieve --------------+
+                          Context
+                          |
+                          ▼
+            Generate Maintenance Docs via LLaMA
+                          |
+                          ▼
+                +--------------------+
+                | Output (DOCX/PDF)  |
+                +--------------------+
 
  ----------------------
  Folder Structure
