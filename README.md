@@ -10,7 +10,7 @@ Answer generation using LLaMA model locally (no OpenAI)
 
 Output formatting into DOCX
 
-# 📁 All required code modules, scripts, and instructions have been created in the project structure above. You can now:
+ 📁 All required code modules, scripts, and instructions have been created in the project structure above. You can now:
 
 # How to Run
 
