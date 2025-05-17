@@ -1,3 +1,4 @@
+
 # What's Included:
 
 Parsing hundreds of aerospace manuals (PDF/DOCX)
@@ -27,6 +28,7 @@ pip install streamlit python-docx faiss-cpu llama-cpp langchain
 streamlit run streamlit_app.py
 
 # Notes
+- Follow the folder_structure.txt file to create the folders and files
 - This uses a local LLaMA model for free inference (adjust model_id if needed)
 - You can containerize this easily for batch or API use
 - Handles hundreds of manuals and performs chunk-based RAG retrieval
