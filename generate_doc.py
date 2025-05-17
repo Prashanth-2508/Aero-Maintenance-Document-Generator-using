@@ -1,5 +1,4 @@
-# generate_doc.py
-# Core RAG Orchestrator
+# Main orchestrator that handles user query, does RAG, and generates output doc
 
 from utils.vectorstore import search_faiss
 from utils.llama_rag import generate_from_context
@@ -21,6 +20,5 @@ def main(query: str):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate Maintenance Docs using LLaMA + RAG")
     parser.add_argument("--query", type=str, required=True, help="Maintenance issue or instruction")
-
     args = parser.parse_args()
     main(args.query)
