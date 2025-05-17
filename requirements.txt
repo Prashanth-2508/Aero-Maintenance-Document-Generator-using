@@ -1,0 +1,8 @@
+streamlit
+sentence-transformers
+transformers
+torch
+langchain
+faiss-cpu
+python-docx
+PyPDF2
