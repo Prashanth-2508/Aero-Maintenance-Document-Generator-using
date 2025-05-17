@@ -1,27 +1,13 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-import torch
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model_id = "TheBloke/Llama-2-7B-Chat-GGUF"  # or use Llama-3
+# Assume local LLaMA model is downloaded (use HF model like meta-llama/Llama-2-7b-chat-hf)
+
+model_id = "TheBloke/Llama-2-7B-Chat-GGML"
 tokenizer = AutoTokenizer.from_pretrained(model_id)
-model = AutoModelForCausalLM.from_pretrained(model_id, torch_dtype=torch.float16, device_map="auto")
+model = AutoModelForCausalLM.from_pretrained(model_id)
+pipe = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=512)
 
-generator = pipeline("text-generation", model=model, tokenizer=tokenizer, max_new_tokens=512)
-
-def generate_from_context(query, retrieved_context):
-    prompt = f"""
-You are an aerospace maintenance assistant.
-
-Based on the following context, answer the user's query.
-
-Context:
-{retrieved_context}
-
-Query:
-{query}
-
-Response:
-"""
-    result = generator(prompt)[0]['generated_text']
-    return result.replace(prompt, '').strip()
-
+def generate_from_context(query, context):
+    prompt = f"Context: {context}\n\nQuery: {query}\n\nAnswer:"
+    output = pipe(prompt)[0]["generated_text"]
+    return output.split("Answer:")[-1].strip()
