@@ -1,25 +1,20 @@
-from sentence_transformers import SentenceTransformer
-from langchain.vectorstores import FAISS
-from langchain.document_loaders import PyPDFLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-import os
+# Parses all aerospace manuals, chunks them, and stores embeddings into FAISS
 
-def ingest():
-    docs = []
-    for file in os.listdir("data/manuals"):
-        if file.endswith(".pdf"):
-            loader = PyPDFLoader(os.path.join("data/manuals", file))
-            docs.extend(loader.load())
-
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
-    split_docs = splitter.split_documents(docs)
-
-    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
-    texts = [doc.page_content for doc in split_docs]
-    embeddings = model.encode(texts)
-
-    faiss_store = FAISS.from_texts(texts, embedding=model)
-    faiss_store.save_local("vector_store")
+from utils.parser import load_manuals_from_folder
+from utils.chunker import chunk_text
+from utils.vectorstore import build_faiss_index
 
 if __name__ == "__main__":
-    ingest()
+    print("[INFO] Loading aerospace manuals...")
+    manuals = load_manuals_from_folder("data/manuals")
+
+    print("[INFO] Chunking documents...")
+    chunks = []
+    for manual in manuals:
+        chunks.extend(chunk_text(manual["content"]))
+
+    print(f"[INFO] Total chunks created: {len(chunks)}")
+
+    print("[INFO] Building FAISS index...")
+    build_faiss_index(chunks)
+    print("[SUCCESS] Vector store saved!")
