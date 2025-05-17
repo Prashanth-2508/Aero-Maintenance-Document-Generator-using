@@ -1,8 +1,10 @@
-streamlit
-sentence-transformers
-transformers
-torch
-langchain
 faiss-cpu
 python-docx
-PyPDF2
+PyMuPDF
+sentence-transformers
+transformers
+accelerate
+torch
+uuid
+scikit-learn
+pandas
